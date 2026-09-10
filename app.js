@@ -54,6 +54,7 @@
     btnUseGps: document.getElementById("btn-use-gps"),
     btnSheetCancel: document.getElementById("btn-sheet-cancel"),
     btnSheetSubmit: document.getElementById("btn-sheet-submit"),
+    statTotal: document.getElementById("stat-total"),
   };
 
   let selectedCategory = null;
@@ -204,23 +205,24 @@
     els.feedList.innerHTML = "";
     els.emptyState.hidden = visible.length > 0;
     els.feedTitle.textContent = `Bacheca locale (${reports.length})`;
+    if (els.statTotal) els.statTotal.textContent = String(reports.length);
 
     visible.forEach((r) => {
       const li = document.createElement("li");
-      li.className = `report-card cat-${r.category}`;
+      li.className = `report-entry cat-${r.category}`;
       li.innerHTML = `
-        <div class="report-icon">${CATEGORY_ICONS[r.category] || ""}</div>
-        <div class="report-body">
-          <div class="report-top">
-            <span class="report-cat">${CATEGORY_LABELS[r.category]}</span>
-            <span class="report-time">${relativeTime(r.time)}</span>
-          </div>
-          <p class="report-desc">${escapeHtml(r.description)}</p>
-          <p class="report-loc">${r.lat.toFixed(4)}, ${r.lng.toFixed(4)}</p>
+        <span class="report-marker"></span>
+        <div class="report-top">
+          <span class="report-cat">${CATEGORY_LABELS[r.category]}</span>
+          <span class="report-time">${relativeTime(r.time)}</span>
         </div>
-        <button class="report-delete" title="Rimuovi questa segnalazione" aria-label="Rimuovi">
-          <svg viewBox="0 0 20 20" width="16" height="16" fill="none"><path d="M4 5h12M8 5V3.5A1.5 1.5 0 019.5 2h1A1.5 1.5 0 0112 3.5V5m-6.5 0l.7 11a1.5 1.5 0 001.5 1.4h3.6a1.5 1.5 0 001.5-1.4l.7-11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
+        <p class="report-desc">${escapeHtml(r.description)}</p>
+        <div class="report-foot">
+          <span class="report-loc">${r.lat.toFixed(4)}, ${r.lng.toFixed(4)}</span>
+          <button class="report-delete" title="Rimuovi questa segnalazione" aria-label="Rimuovi">
+            <svg viewBox="0 0 20 20" width="16" height="16" fill="none"><path d="M4 5h12M8 5V3.5A1.5 1.5 0 019.5 2h1A1.5 1.5 0 0112 3.5V5m-6.5 0l.7 11a1.5 1.5 0 001.5 1.4h3.6a1.5 1.5 0 001.5-1.4l.7-11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
       `;
       li.querySelector(".report-delete").addEventListener("click", () => deleteReport(r.id));
       els.feedList.appendChild(li);

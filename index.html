@@ -21,21 +21,31 @@
 
   <!-- ===== Header ===== -->
   <header class="topbar">
-    <div class="brand">
-      <svg class="brand-mark" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M15 2 L27 7 V15 C27 21.5 21.8 26.6 15 28 C8.2 26.6 3 21.5 3 15 V7 Z" stroke="#F2A93B" stroke-width="2" stroke-linejoin="round"/>
-        <circle cx="15" cy="14" r="4" stroke="#F2A93B" stroke-width="2"/>
-        <path d="M15 18 L15 22" stroke="#F2A93B" stroke-width="2" stroke-linecap="round"/>
-      </svg>
-      <div class="brand-text">
-        <h1>Vedetta</h1>
-        <p>Segnalazioni di quartiere</p>
-      </div>
-    </div>
+    <svg class="brand-mark" width="26" height="26" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M15 2 L27 7 V15 C27 21.5 21.8 26.6 15 28 C8.2 26.6 3 21.5 3 15 V7 Z" stroke="#F2A93B" stroke-width="2" stroke-linejoin="round"/>
+      <circle cx="15" cy="14" r="4" stroke="#F2A93B" stroke-width="2"/>
+      <path d="M15 18 L15 22" stroke="#F2A93B" stroke-width="2" stroke-linecap="round"/>
+    </svg>
     <button class="icon-btn" id="btn-locate" title="Vai alla mia posizione" aria-label="Vai alla mia posizione">
       <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 1v3M10 16v3M1 10h3M16 10h3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="10" cy="10" r="4.5" stroke="currentColor" stroke-width="1.6"/></svg>
     </button>
   </header>
+
+  <!-- ===== Hero ===== -->
+  <section class="hero">
+    <div class="hero-radar" aria-hidden="true">
+      <span class="ring ring-1"></span>
+      <span class="ring ring-2"></span>
+      <span class="ring ring-3"></span>
+      <span class="sweep"></span>
+      <span class="beacon-dot"></span>
+    </div>
+    <div class="hero-content">
+      <h1 class="hero-title">Vedetta</h1>
+      <p class="hero-tagline">Chi guarda per primo, avvisa chi arriva dopo.</p>
+      <p class="hero-stat"><strong id="stat-total">0</strong> segnalazioni salvate su questo dispositivo</p>
+    </div>
+  </section>
 
   <!-- ===== Banner modalità "punta sulla mappa" ===== -->
   <div class="placing-banner" id="placing-banner" hidden>
