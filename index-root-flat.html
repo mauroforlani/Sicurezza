@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Vedetta — segnalazioni di quartiere</title>
+<meta name="description" content="Segnala e consulta allerte di sicurezza nel tuo quartiere: furti, persone sospette, incidenti e risse.">
+<meta name="theme-color" content="#12151B">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app">
+
+  <!-- ===== Header ===== -->
+  <header class="topbar">
+    <svg class="brand-mark" width="26" height="26" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M15 2 L27 7 V15 C27 21.5 21.8 26.6 15 28 C8.2 26.6 3 21.5 3 15 V7 Z" stroke="#F2A93B" stroke-width="2" stroke-linejoin="round"/>
+      <circle cx="15" cy="14" r="4" stroke="#F2A93B" stroke-width="2"/>
+      <path d="M15 18 L15 22" stroke="#F2A93B" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+    <button class="icon-btn" id="btn-locate" title="Vai alla mia posizione" aria-label="Vai alla mia posizione">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 1v3M10 16v3M1 10h3M16 10h3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="10" cy="10" r="4.5" stroke="currentColor" stroke-width="1.6"/></svg>
+    </button>
+  </header>
+
+  <!-- ===== Hero ===== -->
+  <section class="hero">
+    <div class="hero-radar" aria-hidden="true">
+      <span class="ring ring-1"></span>
+      <span class="ring ring-2"></span>
+      <span class="ring ring-3"></span>
+      <span class="sweep"></span>
+      <span class="beacon-dot"></span>
+    </div>
+    <div class="hero-content">
+      <h1 class="hero-title">Vedetta</h1>
+      <p class="hero-tagline">Chi guarda per primo, avvisa chi arriva dopo.</p>
+      <p class="hero-stat"><strong id="stat-total">0</strong> segnalazioni salvate su questo dispositivo</p>
+    </div>
+  </section>
+
+  <!-- ===== Banner modalità "punta sulla mappa" ===== -->
+  <div class="placing-banner" id="placing-banner" hidden>
+    <span>Tocca un punto sulla mappa per indicare dove è successo</span>
+    <button id="btn-cancel-placing">Annulla</button>
+  </div>
+
+  <!-- ===== Mappa ===== -->
+  <section class="map-wrap">
+    <div id="map"></div>
+    <button class="fab" id="btn-report" aria-label="Nuova segnalazione">
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M11 3v16M3 11h16" stroke="#12151B" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <span>Segnala</span>
+    </button>
+  </section>
+
+  <!-- ===== Filtri ===== -->
+  <nav class="filters" id="filters" aria-label="Filtra per categoria">
+    <button class="chip active" data-filter="all">Tutte</button>
+    <button class="chip" data-filter="furto"><i class="dot dot-furto"></i>Furto</button>
+    <button class="chip" data-filter="sospetto"><i class="dot dot-sospetto"></i>Persona sospetta</button>
+    <button class="chip" data-filter="incidente"><i class="dot dot-incidente"></i>Incidente</button>
+    <button class="chip" data-filter="rissa"><i class="dot dot-rissa"></i>Rissa</button>
+  </nav>
+
+  <!-- ===== Feed ===== -->
+  <main class="feed">
+    <div class="feed-head">
+      <h2 id="feed-title">Bacheca locale</h2>
+      <button class="text-btn" id="btn-clear" title="Rimuovi tutte le segnalazioni salvate">Svuota bacheca</button>
+    </div>
+    <p class="feed-note">Le segnalazioni restano solo su questo dispositivo: non vengono inviate a nessun server.</p>
+    <ul class="feed-list" id="feed-list"></ul>
+    <div class="empty-state" id="empty-state" hidden>
+      <p>Nessuna segnalazione qui. Se noti qualcosa, tocca <strong>Segnala</strong> per avvisare chi guarda questa bacheca dopo di te.</p>
+    </div>
+  </main>
+
+  <footer class="foot">
+    <p>Vedetta è uno strumento locale e comunitario. Per emergenze in corso chiama sempre il 112.</p>
+  </footer>
+</div>
+
+<!-- ===== Bottom sheet: form segnalazione ===== -->
+<div class="sheet-overlay" id="sheet-overlay" hidden></div>
+<form class="sheet" id="report-sheet" hidden>
+  <div class="sheet-handle"></div>
+  <h2>Nuova segnalazione</h2>
+
+  <div class="field">
+    <label>Cosa hai visto?</label>
+    <div class="category-grid" id="category-grid">
+      <button type="button" class="cat-btn" data-cat="furto">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none"><path d="M7 8V6a5 5 0 0110 0v2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><rect x="4" y="8" width="16" height="12" rx="2" stroke="currentColor" stroke-width="1.7"/></svg>
+        <span>Furto</span>
+      </button>
+      <button type="button" class="cat-btn" data-cat="sospetto">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none"><path d="M2 12s4-6 10-6 10 6 10 6-4 6-10 6-10-6-10-6z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><circle cx="12" cy="12" r="2.6" stroke="currentColor" stroke-width="1.7"/></svg>
+        <span>Persona sospetta</span>
+      </button>
+      <button type="button" class="cat-btn" data-cat="incidente">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none"><path d="M12 3l10 18H2L12 3z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M12 10v4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><circle cx="12" cy="17" r=".9" fill="currentColor"/></svg>
+        <span>Incidente</span>
+      </button>
+      <button type="button" class="cat-btn" data-cat="rissa">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none"><path d="M5 15l3-3-3-3M19 15l-3-3 3-3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 20l3-3 3 3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>Rissa</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="field">
+    <label for="desc">Descrizione</label>
+    <textarea id="desc" maxlength="280" rows="3" placeholder="Cosa è successo, quando, dettagli utili..." required></textarea>
+    <span class="char-count"><span id="char-count">0</span>/280</span>
+  </div>
+
+  <div class="field">
+    <label>Posizione</label>
+    <div class="location-row">
+      <span id="location-preview">Tocca sulla mappa per indicare il punto</span>
+      <button type="button" class="text-btn" id="btn-use-gps">Usa la mia posizione</button>
+    </div>
+  </div>
+
+  <div class="sheet-actions">
+    <button type="button" class="btn-secondary" id="btn-sheet-cancel">Annulla</button>
+    <button type="submit" class="btn-primary" id="btn-sheet-submit" disabled>Pubblica segnalazione</button>
+  </div>
+</form>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<script src="app.js"></script>
+</body>
+</html>
