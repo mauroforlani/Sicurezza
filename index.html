@@ -75,9 +75,13 @@
   <main class="feed">
     <div class="feed-head">
       <h2 id="feed-title">Bacheca locale</h2>
-      <button class="text-btn" id="btn-clear" title="Rimuovi tutte le segnalazioni salvate">Svuota bacheca</button>
+      <div class="feed-actions">
+        <button class="text-btn" id="btn-update" title="Scarica le nuove segnalazioni pubblicate dal gestore del sito">Aggiorna</button>
+        <button class="text-btn" id="btn-clear" title="Rimuovi tutte le segnalazioni salvate">Svuota bacheca</button>
+      </div>
     </div>
     <p class="feed-note" id="feed-note">Le segnalazioni restano solo su questo dispositivo: non vengono inviate a nessun server.</p>
+    <p class="update-status" id="update-status" hidden></p>
     <ul class="feed-list" id="feed-list"></ul>
     <div class="empty-state" id="empty-state" hidden>
       <p>Nessuna segnalazione qui. Se noti qualcosa, tocca <strong>Segnala</strong> per avvisare chi guarda questa bacheca dopo di te.</p>

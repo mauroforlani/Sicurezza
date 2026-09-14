@@ -56,6 +56,8 @@
     btnSheetSubmit: document.getElementById("btn-sheet-submit"),
     statTotal: document.getElementById("stat-total"),
     feedNote: document.getElementById("feed-note"),
+    btnUpdate: document.getElementById("btn-update"),
+    updateStatus: document.getElementById("update-status"),
   };
 
   let selectedCategory = null;
@@ -80,31 +82,66 @@
   }
 
   function seedReports() {
-    const now = Date.now();
     return [
       {
         id: "seed-1",
         category: "furto",
-        description: "Esempio: bicicletta rubata davanti al portone, catena tagliata.",
-        lat: DEFAULT_CENTER[0] + 0.004,
-        lng: DEFAULT_CENTER[1] + 0.006,
-        time: now - 1000 * 60 * 42,
+        description: "Un uomo è stato sorpreso mentre sottraeva il portafoglio a un passeggero con la tecnica del borseggio, alle spalle della vittima; bloccato dagli agenti in borghese, la refurtiva è stata recuperata.",
+        lat: 45.4861,
+        lng: 9.2036,
+        time: new Date("2026-09-12T10:37:00").getTime(),
+        source: "https://www.ansa.it/lombardia/notizie/2026/09/12/ruba-portafogli-a-un-passeggero-alla-stazione-centrale-di-milano-arrestato_373e10d7-5e1f-43f9-b2b1-250761fe5368.html",
+        sourceLabel: "ANSA — Stazione Centrale",
       },
       {
         id: "seed-2",
-        category: "sospetto",
-        description: "Esempio: persona ferma da tempo vicino ai portoni, controlla le maniglie delle auto.",
-        lat: DEFAULT_CENTER[0] - 0.003,
-        lng: DEFAULT_CENTER[1] + 0.002,
-        time: now - 1000 * 60 * 60 * 3,
+        category: "furto",
+        description: "Due persone hanno provato ad approfittare di un anziano in difficoltà con due valigie sulle scale della metropolitana per sottrargli il portafoglio; sono stati bloccati sul fatto dagli agenti della Polizia Locale.",
+        lat: 45.4776,
+        lng: 9.2027,
+        time: new Date("2026-09-10T18:00:00").getTime(),
+        source: "https://www.radiolombardia.it/2026/09/11/milano-borseggiano-un-ultraottantenne-con-due-valigie-alla-metro-lima-la-polizia-locale-li-arresta-in-flagrante/",
+        sourceLabel: "Radio Lombardia — Metro Lima",
       },
       {
         id: "seed-3",
+        category: "furto",
+        description: "Scippo del portafoglio ai danni di un passante colto di sorpresa mentre era affaticato; i responsabili si sono allontanati rapidamente nella zona.",
+        lat: 45.4794,
+        lng: 9.2078,
+        time: new Date("2026-09-12T12:00:00").getTime(),
+        source: "https://www.milanotoday.it/cronaca/",
+        sourceLabel: "MilanoToday — Porta Venezia",
+      },
+      {
+        id: "seed-4",
         category: "incidente",
-        description: "Esempio: tamponamento tra due auto all'incrocio, traffico rallentato.",
-        lat: DEFAULT_CENTER[0] + 0.002,
-        lng: DEFAULT_CENTER[1] - 0.005,
-        time: now - 1000 * 60 * 60 * 20,
+        description: "Scontro tra due auto in un incrocio senza semaforo, poco prima dell'alba: coinvolte sei persone, tutte trasportate in ospedale con ferite non gravi.",
+        lat: 45.4919,
+        lng: 9.1332,
+        time: new Date("2026-09-13T05:15:00").getTime(),
+        source: "https://www.ansa.it/lombardia/notizie/2026/09/13/incidente-stradale-per-daniel-maldini-a-milano-in-ospedale-per-accertamenti_b1037c51-2be2-40ca-a188-a78c5f8a8d72.html",
+        sourceLabel: "ANSA — via Caracciolo",
+      },
+      {
+        id: "seed-5",
+        category: "sospetto",
+        description: "Un uomo ha infastidito ripetutamente passanti nei pressi di un'area cani, per poi spostarsi poco dopo verso un locale della zona continuando ad importunare i presenti; sono intervenute le forze dell'ordine.",
+        lat: 45.4781,
+        lng: 9.2110,
+        time: new Date("2026-09-06T20:00:00").getTime(),
+        source: "https://www.ilgiorno.it/milano/cronaca/le-molestie-e-i-tentativi-6f2f436a",
+        sourceLabel: "Il Giorno — Piazzale Lavater",
+      },
+      {
+        id: "seed-6",
+        category: "rissa",
+        description: "Un gruppo di persone incappucciate ha aggredito con delle coltellate un tifoso straniero in zona Navigli, nella notte prima di una partita di calcio internazionale in città.",
+        lat: 45.4517,
+        lng: 9.1739,
+        time: new Date("2026-09-11T23:30:00").getTime(),
+        source: "https://it.soccerway.com/news/calcio-champions-league-accoltellamento-in-centro-a-milano-prima-del-match-di-champions-un-tifoso-in-ospedale/AT5RMZb5",
+        sourceLabel: "Soccerway — Navigli",
       },
     ];
   }
@@ -112,9 +149,9 @@
   // ---------- Mappa ----------
   const map = L.map(els.map, { zoomControl: true }).setView(DEFAULT_CENTER, DEFAULT_ZOOM);
 
-  L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-    subdomains: "abcd",
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    subdomains: "abc",
     maxZoom: 19,
   }).addTo(map);
 
@@ -139,8 +176,11 @@
 
   function addMarkerForReport(r) {
     const marker = L.marker([r.lat, r.lng], { icon: pinIcon(r.category, false) }).addTo(map);
+    const sourceHtml = r.source
+      ? `<br><a href="${r.source}" target="_blank" rel="noopener">Fonte: ${escapeHtml(r.sourceLabel || "articolo")}</a>`
+      : "";
     marker.bindPopup(
-      `<strong>${CATEGORY_LABELS[r.category]}</strong><br>${escapeHtml(r.description)}`
+      `<strong>${CATEGORY_LABELS[r.category]}</strong><br>${escapeHtml(r.description)}${sourceHtml}`
     );
     markers[r.id] = marker;
   }
@@ -225,6 +265,7 @@
         <p class="report-desc">${escapeHtml(r.description)}</p>
         <div class="report-foot">
           <span class="report-loc">${r.lat.toFixed(4)}, ${r.lng.toFixed(4)}</span>
+          ${r.source ? `<a class="report-source" href="${r.source}" target="_blank" rel="noopener">Fonte</a>` : ""}
           <button class="report-delete" title="Rimuovi questa segnalazione" aria-label="Rimuovi">
             <svg viewBox="0 0 20 20" width="16" height="16" fill="none"><path d="M4 5h12M8 5V3.5A1.5 1.5 0 019.5 2h1A1.5 1.5 0 0112 3.5V5m-6.5 0l.7 11a1.5 1.5 0 001.5 1.4h3.6a1.5 1.5 0 001.5-1.4l.7-11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
@@ -251,6 +292,71 @@
       renderAllMarkers();
     }
   });
+
+  // ---------- Aggiornamento dati (data.json) ----------
+  function showUpdateStatus(text, isError) {
+    if (!els.updateStatus) return;
+    els.updateStatus.textContent = text;
+    els.updateStatus.hidden = false;
+    els.updateStatus.classList.toggle("is-error", Boolean(isError));
+  }
+
+  async function checkForUpdates() {
+    if (!els.btnUpdate) return;
+    els.btnUpdate.disabled = true;
+    const originalLabel = els.btnUpdate.textContent;
+    els.btnUpdate.textContent = "Aggiornamento…";
+    showUpdateStatus("Controllo di nuove segnalazioni…", false);
+
+    try {
+      // Cache-busting: forza il browser a non usare una copia vecchia di data.json
+      const res = await fetch(`data.json?t=${Date.now()}`, { cache: "no-store" });
+      if (!res.ok) throw new Error("Risposta non valida (" + res.status + ")");
+      const incoming = await res.json();
+      if (!Array.isArray(incoming)) throw new Error("Formato dati non valido");
+
+      const existingIds = new Set(reports.map((r) => r.id));
+      let added = 0;
+      incoming.forEach((item) => {
+        if (!item || !item.id || existingIds.has(item.id)) return;
+        const time = typeof item.time === "string" ? new Date(item.time).getTime() : item.time;
+        if (!item.category || !item.description || !Number.isFinite(item.lat) || !Number.isFinite(item.lng) || !Number.isFinite(time)) {
+          return; // scarta voci malformate invece di far fallire tutto l'aggiornamento
+        }
+        reports.push({
+          id: item.id,
+          category: item.category,
+          description: item.description,
+          lat: item.lat,
+          lng: item.lng,
+          time,
+          source: item.source || null,
+          sourceLabel: item.sourceLabel || null,
+        });
+        existingIds.add(item.id);
+        added++;
+      });
+
+      if (added > 0) {
+        saveReports();
+        renderFeed();
+        renderAllMarkers();
+        showUpdateStatus(`Aggiunte ${added} nuove segnalazioni.`, false);
+      } else {
+        showUpdateStatus("Nessuna nuova segnalazione disponibile al momento.", false);
+      }
+    } catch (err) {
+      console.warn("Aggiornamento non riuscito", err);
+      showUpdateStatus("Aggiornamento non riuscito. Riprova più tardi.", true);
+    } finally {
+      els.btnUpdate.disabled = false;
+      els.btnUpdate.textContent = originalLabel;
+    }
+  }
+
+  if (els.btnUpdate) {
+    els.btnUpdate.addEventListener("click", checkForUpdates);
+  }
 
   // ---------- Bottom sheet: nuova segnalazione ----------
   function enterPlacingMode() {

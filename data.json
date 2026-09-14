@@ -1,0 +1,62 @@
+[
+  {
+    "id": "seed-1",
+    "category": "furto",
+    "description": "Un uomo è stato sorpreso mentre sottraeva il portafoglio a un passeggero con la tecnica del borseggio, alle spalle della vittima; bloccato dagli agenti in borghese, la refurtiva è stata recuperata.",
+    "lat": 45.4861,
+    "lng": 9.2036,
+    "time": "2026-09-12T10:37:00",
+    "source": "https://www.ansa.it/lombardia/notizie/2026/09/12/ruba-portafogli-a-un-passeggero-alla-stazione-centrale-di-milano-arrestato_373e10d7-5e1f-43f9-b2b1-250761fe5368.html",
+    "sourceLabel": "ANSA — Stazione Centrale"
+  },
+  {
+    "id": "seed-2",
+    "category": "furto",
+    "description": "Due persone hanno provato ad approfittare di un anziano in difficoltà con due valigie sulle scale della metropolitana per sottrargli il portafoglio; sono stati bloccati sul fatto dagli agenti della Polizia Locale.",
+    "lat": 45.4776,
+    "lng": 9.2027,
+    "time": "2026-09-10T18:00:00",
+    "source": "https://www.radiolombardia.it/2026/09/11/milano-borseggiano-un-ultraottantenne-con-due-valigie-alla-metro-lima-la-polizia-locale-li-arresta-in-flagrante/",
+    "sourceLabel": "Radio Lombardia — Metro Lima"
+  },
+  {
+    "id": "seed-3",
+    "category": "furto",
+    "description": "Scippo del portafoglio ai danni di un passante colto di sorpresa mentre era affaticato; i responsabili si sono allontanati rapidamente nella zona.",
+    "lat": 45.4794,
+    "lng": 9.2078,
+    "time": "2026-09-12T12:00:00",
+    "source": "https://www.milanotoday.it/cronaca/",
+    "sourceLabel": "MilanoToday — Porta Venezia"
+  },
+  {
+    "id": "seed-4",
+    "category": "incidente",
+    "description": "Scontro tra due auto in un incrocio senza semaforo, poco prima dell'alba: coinvolte sei persone, tutte trasportate in ospedale con ferite non gravi.",
+    "lat": 45.4919,
+    "lng": 9.1332,
+    "time": "2026-09-13T05:15:00",
+    "source": "https://www.ansa.it/lombardia/notizie/2026/09/13/incidente-stradale-per-daniel-maldini-a-milano-in-ospedale-per-accertamenti_b1037c51-2be2-40ca-a188-a78c5f8a8d72.html",
+    "sourceLabel": "ANSA — via Caracciolo"
+  },
+  {
+    "id": "seed-5",
+    "category": "sospetto",
+    "description": "Un uomo ha infastidito ripetutamente passanti nei pressi di un'area cani, per poi spostarsi poco dopo verso un locale della zona continuando ad importunare i presenti; sono intervenute le forze dell'ordine.",
+    "lat": 45.4781,
+    "lng": 9.2110,
+    "time": "2026-09-06T20:00:00",
+    "source": "https://www.ilgiorno.it/milano/cronaca/le-molestie-e-i-tentativi-6f2f436a",
+    "sourceLabel": "Il Giorno — Piazzale Lavater"
+  },
+  {
+    "id": "seed-6",
+    "category": "rissa",
+    "description": "Un gruppo di persone incappucciate ha aggredito con delle coltellate un tifoso straniero in zona Navigli, nella notte prima di una partita di calcio internazionale in città.",
+    "lat": 45.4517,
+    "lng": 9.1739,
+    "time": "2026-09-11T23:30:00",
+    "source": "https://it.soccerway.com/news/calcio-champions-league-accoltellamento-in-centro-a-milano-prima-del-match-di-champions-un-tifoso-in-ospedale/AT5RMZb5",
+    "sourceLabel": "Soccerway — Navigli"
+  }
+]

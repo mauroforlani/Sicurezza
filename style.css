@@ -204,6 +204,12 @@ button{ font-family: inherit; cursor: pointer; }
   min-height: 300px;
 }
 #map{ width:100%; height:100%; background: var(--panel); }
+/* Le tile di OpenStreetMap sono chiare: le "scuriamo" via filtro CSS,
+   così non serve nessuna API key per una mappa dark. I marker vivono
+   in un pannello separato e non vengono toccati da questo filtro. */
+.leaflet-tile-pane{
+  filter: invert(1) hue-rotate(180deg) brightness(0.92) contrast(0.88) saturate(0.9);
+}
 .leaflet-control-attribution{
   background: rgba(18,21,27,0.75) !important;
   color: var(--text-dim) !important;
@@ -311,6 +317,12 @@ button{ font-family: inherit; cursor: pointer; }
   gap: 10px;
 }
 .feed-head h2{ font-size: 22px; }
+.feed-actions{
+  display:flex;
+  align-items:center;
+  gap: 14px;
+  flex-shrink: 0;
+}
 .text-btn{
   background:none; border:none;
   color: var(--text-dim);
@@ -319,6 +331,14 @@ button{ font-family: inherit; cursor: pointer; }
   text-underline-offset: 2px;
 }
 .text-btn:hover{ color: var(--accent); }
+.text-btn:disabled{ opacity: .5; cursor: default; text-decoration: none; }
+#btn-update{ color: var(--accent); font-weight: 600; }
+.update-status{
+  font-size: 12.5px;
+  color: var(--text-dim);
+  margin: -6px 0 16px;
+}
+.update-status.is-error{ color: var(--c-incidente); }
 .feed-note{
   color: var(--text-dim);
   font-size: 12.5px;
@@ -388,10 +408,18 @@ button{ font-family: inherit; cursor: pointer; }
 .report-foot{
   display:flex;
   align-items:center;
-  justify-content: space-between;
+  gap: 10px;
   margin-top: 8px;
 }
-.report-loc{ font-size: 12px; color: var(--text-dim); }
+.report-loc{ font-size: 12px; color: var(--text-dim); margin-right: auto; }
+.report-source{
+  font-size: 12px;
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  white-space: nowrap;
+}
+.report-source:hover{ color: var(--text); }
 
 .report-delete{
   background:none; border:none;
